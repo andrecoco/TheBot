@@ -32,10 +32,10 @@ def lidaMensagemGrupo(mensagem, text):
 	if("triste" in text.lower()):
 		num = random.randrange(0, 2) #GERA NUMERO 0 ou 1
 		if(num == 1):
-			url = get_doge_image_url()
+			url = botc.get_doge_image_url()
 			r = com.enviaImagemCaption(mensagem, url, "Poxa... Fica triste nao, olha a foto desse cachorro!", True)
 		else:
-			url = get_cat_image_url()
+			url = botc.get_cat_image_url()
 			r = com.enviaImagemCaption(mensagem, url, "Poxa... Fica triste nao, olha a foto desse gato!", True)
 		print(r)
 		return
