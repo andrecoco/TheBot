@@ -128,13 +128,14 @@ def botCommands(mensagem, text):
 		
 		#PEGA IMAGEM E NOME
 		
-		rand = random.randrange(0, 65) #GERA NUMERO 0 - 64
-		if(rand == 32): #VER SE PEGA O SHINY
+		rand = random.randrange(0, 21) #GERA NUMERO 0 - 20
+		if(rand == 15): #VER SE PEGA O SHINY
 			url = auxf.extract_values(pokemon, "front_shiny")[0]
+			nome = "Shiny " + auxf.extract_values(pokemon, "name")[0]
 		else:
 			url = auxf.extract_values(pokemon, "front_default")[0]
+			nome = auxf.extract_values(pokemon, "name")[0]
 		
-		nome = auxf.extract_values(pokemon, "name")[0]
 		print(nome)
 		print(url)
 
