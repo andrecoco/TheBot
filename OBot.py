@@ -1,184 +1,70 @@
-import json
-import requests
-import time
-#https://docs.python.org/3/library/random.html
-import random
-import re
-import math
+import telegram
+TOKEN = ""
 
-#Import modules
-import FuncoesAuxiliares as auxf
-import FuncoesComunicacao as com
-import BotCommands as botc
+from telegram.ext import Updater
+updater = Updater(token=TOKEN, use_context=True)
+dispatcher = updater.dispatcher
 
-#DEFINES
-grupoID = -1001367341107
+import logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                     level=logging.INFO)
 
-#LIDA COM OS COMANDOS
-def lidaMensagemPrivado(data, text):
-	if(True):
-		return
-	PARAMS = {'message':text}
-	url = 'https://some-random-api.ml/chatbot'
-	r = requests.get(url, params=PARAMS)
-	print(r) 
-	dados = r.json()
-	print(dados)
-	respostaChat = dados['response']
-	r = com.enviaMensagem(data, respostaChat, False)
-	print(r)
-	return
+#SET ALL COMMAND_HANDLERS
+from telegram.ext import CommandHandler
+from Commands import *
+start_handler       = CommandHandler('start', start)
+dorimetor_handler   = CommandHandler('dorimetor', dorimetor)
+dorimes_handler     = CommandHandler('dorimes', dorimes)
+rolld20_handler     = CommandHandler('rolld20', rolld20)
+doge_handler        = CommandHandler('doge', doge)
+cat_handler         = CommandHandler('cat', cat)
+birb_handler        = CommandHandler('birb', birb)
+dolar_handler       = CommandHandler('dolar', pokeDolar)
+euro_handler        = CommandHandler('euro', euro)
+libra_handler       = CommandHandler('libra', libra)
+iene_handler        = CommandHandler('iene', iene)
+bitcoin_handler     = CommandHandler('bitcoin', bitcoin)
+litecoin_handler    = CommandHandler('litecoin', litecoin)
+ethereum_handler    = CommandHandler('ethereum', ethereum)
+charada_handler     = CommandHandler('charada', charada)
+hug_handler         = CommandHandler('hug', hug)
+wink_handler        = CommandHandler('wink', wink)
+pat_handler         = CommandHandler('pat', pat)
+meme_handler        = CommandHandler('meme', meme)
+sabedoria_handler   = CommandHandler('sabedoria', sabedoria)
+sadanimesong_handler = CommandHandler('sadanimesong', sadanimesong)
+acende_handler      = CommandHandler('acende', acende)
 
-#LIDA COM AS MENSAGENS, E DECIDE O QUE RESPONDER
-def lidaMensagemGrupo(mensagem, text):
-	print(text)
-	if("triste" in text.lower()):
-		num = random.randrange(0, 2) #GERA NUMERO 0 ou 1
-		if(num == 1):
-			url = botc.get_doge_image_url()
-			r = com.enviaImagemCaption(mensagem, url, "Poxa... Fica triste nao, olha a foto desse cachorro!", True)
-		else:
-			url = botc.get_cat_image_url()
-			r = com.enviaImagemCaption(mensagem, url, "Poxa... Fica triste nao, olha a foto desse gato!", True)
-		print(r)
-		return
+dispatcher.add_handler(start_handler)
+dispatcher.add_handler(dorimetor_handler)
+dispatcher.add_handler(dorimes_handler)
+dispatcher.add_handler(rolld20_handler)
+dispatcher.add_handler(doge_handler)
+dispatcher.add_handler(cat_handler)
+dispatcher.add_handler(birb_handler)
+dispatcher.add_handler(dolar_handler)
+dispatcher.add_handler(euro_handler)
+dispatcher.add_handler(libra_handler)
+dispatcher.add_handler(iene_handler)
+dispatcher.add_handler(bitcoin_handler)
+dispatcher.add_handler(litecoin_handler)
+dispatcher.add_handler(ethereum_handler)
+dispatcher.add_handler(charada_handler)
+dispatcher.add_handler(hug_handler)
+dispatcher.add_handler(wink_handler)
+dispatcher.add_handler(pat_handler)
+dispatcher.add_handler(meme_handler)
+dispatcher.add_handler(sabedoria_handler)
+dispatcher.add_handler(sadanimesong_handler)
+dispatcher.add_handler(acende_handler)
 
-	#if("?" in text):
-	#	r = com.enviaMensagem(mensagem, "42", True)
-	#	print(r)
-	return
+#NON COMMANDS
+from telegram.ext import MessageHandler, Filters
+dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'triste', re.IGNORECASE)), triste))
+                        
+                        
 
-#RECEBE UMA LISTA DE TODAS AS MENSAGENS E PROCESSA ELAS
-def processaMensagens(mensagens):
-	update_id = None
-	#Passa por todas as mensagens
-	for mensagem in mensagens:
-		#print(mensagem)
-
-		#PEGA AS INFORMACOES DA MSG
-		message_id = auxf.extract_values(mensagem, 'message_id')
-		
-		try:
-			chat_id = auxf.extract_values(mensagem['message']['chat'], 'id')
-		except Exception as e:
-			chat_id = auxf.extract_values(mensagem['edited_message']['chat'], 'id')
-
-		try:
-			username = auxf.extract_values(mensagem['message']['from'], 'username')
-		except Exception as e:
-			username = auxf.extract_values(mensagem['edited_message']['from'], 'username')
-
-		try:
-			isGroupMessage = "group" in auxf.extract_values(mensagem['message']['chat'], 'type')
-		except Exception as e:
-			isGroupMessage = "group" in auxf.extract_values(mensagem['edited_message']['chat'], 'type')
-
-		try:
-			isSuperGroupMessage = "supergroup" in auxf.extract_values(mensagem['message']['chat'], 'type')
-		except Exception as e:
-			isSuperGroupMessage = "supergroup" in auxf.extract_values(mensagem['edited_message']['chat'], 'type')
-
-		isBotCommand = "bot_command" in auxf.extract_values(mensagem, 'type')
-		
-		#SE O CAMPO reply_to_message existir, entao eh um reply
-		try:
-			try:
-				aux = mensagem['message']['reply_to_message']
-			except Exception as e:
-				aux = mensagem['edited_message']['reply_to_message']
-			isReply = True
-		except Exception as e:
-			isReply = False
-
-		textList = auxf.extract_values(mensagem, 'text')
-		
-		#print(message_id)
-		#print(chat_id)
-		#print(username)
-		#print(isGroupMessage)
-		#print(isSuperGroupMessage)
-		#print(isBotCommand)
-		#print(isReply)
-		#print(textList)
-
-		#PEGA O TEXTO CERTO DA MSG
-		#se nao tiver texto, ignora
-		if(textList == []):
-			continue
-
-		if(isReply):
-			if(len(textList) > 1): #CONFERE SE A RESPOSTA TEM TEXTO
-				text = textList[1]
-			else:
-				continue
-		else:
-			text = textList[0]
-
-		if(isBotCommand):
-			botc.botCommands(mensagem, text)
-		elif(isGroupMessage or isSuperGroupMessage):
-			lidaMensagemGrupo(mensagem, text)
-		else:
-			#se for privado
-			if("andrecoco" in username):
-				print("Forwarding Message")
-				r = com.enviaMensagemManual(grupoID,text, False)
-				print(r)
-			else:
-				lidaMensagemGrupo(mensagem, text)
-	update_id = auxf.extract_values(mensagens[-1], "update_id")
-	return update_id[0]
-
-########################################################################
-
-offset = 0
-update_id = None
-
-print("Deseja Ignorar as mensagens antigas? (y/n)");
-resposta = input()
-
-if(resposta == 'y'):
-	r = com.recebeUpdate(offset)
-	#RECEBE UPDATE
-	r = com.recebeUpdate(offset)
-
-	#EXTRAI INFORMACAO
-	data = r.json()
-
-	if(data["ok"] != True):
-		print("Erro ao conseguir update!")
-		exit(0)
-	#SEPARA TODAS AS MENSAGENS RECEBIDAS E ARMAZENA PARA PROCESSAMENTO
-	mensagens = data["result"]
-	
-	if(mensagens != []):
-		offset = auxf.extract_values(mensagens[-1], "update_id")[0] + 1
-
-
-print(offset)
-time.sleep(5)
-while(True):	
-	try:
-		#RECEBE UPDATE
-		r = com.recebeUpdate(offset)
-
-		#EXTRAI INFORMACAO
-		data = r.json()
-
-		if(data["ok"] != True):
-			print("Erro ao conseguir update!")
-			time.sleep(5)
-			continue
-
-		#SEPARA TODAS AS MENSAGENS RECEBIDAS E ARMAZENA PARA PROCESSAMENTO
-		mensagens = data["result"]
-		
-		if(mensagens == []):
-			print("sem mensagens")
-			time.sleep(1)
-			continue
-
-		#print(f"Processando {len(mensagens)} mensagens!")
-		offset = processaMensagens(mensagens) + 1
-	except Exception as e:
-		print("1 - " + str(e))
+#START BOT
+updater.start_polling()
+updater.idle()
+updater.stop()
