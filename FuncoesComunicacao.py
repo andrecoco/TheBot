@@ -8,7 +8,7 @@ import json
 import FuncoesAuxiliares as auxf
 
 #URL
-URL = #Insira a URL da API com o token aqui
+URL = "https://api.telegram.org/bot934550581:AAHZ6rrT4RpaAfsphwUw4FPrHIRzpC2JE90"
 
 def recebeUpdate(offset):
 	#PARAMETROS
@@ -21,6 +21,28 @@ def recebeUpdate(offset):
 	except Exception as e:
 		time.sleep(5)
 		return e
+	return r
+
+#ENVIA MENSAGEM, MANUALMENTE COM REPLY OU NAO
+def enviaMensagemManual(chatid, resposta, reply):
+	#messageid = extract_values(data, 'message_id') 
+	if(reply != True):
+		#PREPARA A MENSAGEM DE VOLTA
+		data = {'chat_id':chatid,
+				'text':resposta}
+	else:
+		#PREPARA A MENSAGEM DE VOLTA
+		data = {'chat_id':chatid,
+			'text':resposta,
+			'reply_to_message_id':messageid}
+	
+	#ENVIA A MSG DE VOLTA
+	try:
+		r = requests.post(url = URL + '/sendMessage', data = data)
+	except Exception as e:
+		sleep(5)
+		return e
+	
 	return r
 
 #ENVIA MENSAGEM, COM REPLY OU NAO
@@ -94,15 +116,29 @@ def enviaAnimation(dados, url, reply):
 	messageid = auxf.extract_values(dados, 'message_id')
 	chatid = auxf.extract_values(dados, 'id') #PODE TER PROBLEMA!!!!! (TEM VARIOS IDs)
 	
+	#SE O CAMPO reply_to_message existir, entao eh um reply
+	try:
+		try:
+			aux = mensagem['message']['reply_to_message']
+		except Exception as e:
+			aux = mensagem['edited_message']['reply_to_message']
+		isReply = True
+	except Exception as e:
+		isReply = False
+
 	#PREPARA A MENSAGEM
 	#VERIFICA SE EH UMA RESPOSTA
-	if(reply != True):
-		DATA = {'chat_id':chatid[1],
-				'animation':url}
-	else:
+	if(isReply):
 		DATA = {'chat_id':chatid[1],
 				'animation':url,
-				'reply_to_message_id':messageid}
+				'reply_to_message_id':messageid[0]}
+	elif(reply == True and len(messageid)>1):
+		DATA = {'chat_id':chatid[1],
+				'animation':url,
+				'reply_to_message_id':messageid[1]}
+	else:
+		DATA = {'chat_id':chatid[1],
+				'animation':url}
 	
 	#ENVIA
 	try:

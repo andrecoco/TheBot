@@ -11,6 +11,9 @@ import FuncoesAuxiliares as auxf
 import FuncoesComunicacao as com
 import BotCommands as botc
 
+#DEFINES
+grupoID = -1001367341107
+
 #LIDA COM OS COMANDOS
 def lidaMensagemPrivado(data, text):
 	if(True):
@@ -70,6 +73,11 @@ def processaMensagens(mensagens):
 		except Exception as e:
 			isGroupMessage = "group" in auxf.extract_values(mensagem['edited_message']['chat'], 'type')
 
+		try:
+			isSuperGroupMessage = "supergroup" in auxf.extract_values(mensagem['message']['chat'], 'type')
+		except Exception as e:
+			isSuperGroupMessage = "supergroup" in auxf.extract_values(mensagem['edited_message']['chat'], 'type')
+
 		isBotCommand = "bot_command" in auxf.extract_values(mensagem, 'type')
 		
 		#SE O CAMPO reply_to_message existir, entao eh um reply
@@ -83,11 +91,12 @@ def processaMensagens(mensagens):
 			isReply = False
 
 		textList = auxf.extract_values(mensagem, 'text')
-
+		
 		#print(message_id)
 		#print(chat_id)
 		#print(username)
 		#print(isGroupMessage)
+		#print(isSuperGroupMessage)
 		#print(isBotCommand)
 		#print(isReply)
 		#print(textList)
@@ -107,12 +116,16 @@ def processaMensagens(mensagens):
 
 		if(isBotCommand):
 			botc.botCommands(mensagem, text)
-
-		if(isGroupMessage):
+		elif(isGroupMessage or isSuperGroupMessage):
 			lidaMensagemGrupo(mensagem, text)
 		else:
-			#TODO - lidaMensagemPrivado()
-			lidaMensagemGrupo(mensagem, text)
+			#se for privado
+			if("andrecoco" in username):
+				print("Forwarding Message")
+				r = com.enviaMensagemManual(grupoID,text, False)
+				print(r)
+			else:
+				lidaMensagemGrupo(mensagem, text)
 	update_id = auxf.extract_values(mensagens[-1], "update_id")
 	return update_id[0]
 
@@ -121,6 +134,29 @@ def processaMensagens(mensagens):
 offset = 0
 update_id = None
 
+print("Deseja Ignorar as mensagens antigas? (y/n)");
+resposta = input()
+
+if(resposta == 'y'):
+	r = com.recebeUpdate(offset)
+	#RECEBE UPDATE
+	r = com.recebeUpdate(offset)
+
+	#EXTRAI INFORMACAO
+	data = r.json()
+
+	if(data["ok"] != True):
+		print("Erro ao conseguir update!")
+		exit(0)
+	#SEPARA TODAS AS MENSAGENS RECEBIDAS E ARMAZENA PARA PROCESSAMENTO
+	mensagens = data["result"]
+	
+	if(mensagens != []):
+		offset = auxf.extract_values(mensagens[-1], "update_id")[0] + 1
+
+
+print(offset)
+time.sleep(5)
 while(True):	
 	try:
 		#RECEBE UPDATE

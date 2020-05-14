@@ -80,7 +80,7 @@ def botCommands(mensagem, text):
 				saida += text[i]
 
 		r = com.enviaMensagem(mensagem, saida, True)
-		print(r)
+		print("Dorimetor - " + str(r))
 		return 
 
 	if("dorimes" in text):
@@ -102,6 +102,11 @@ def botCommands(mensagem, text):
 
 	if("cat" in text):
 		r = com.enviaImagem(mensagem, get_cat_image_url(), False)
+		print(r)
+		return
+
+	if("birb" in text):
+		r = com.enviaImagem(mensagem, get_birb_image_url(), False)
 		print(r)
 		return
 
@@ -138,7 +143,7 @@ def botCommands(mensagem, text):
 		
 		print(nome)
 		print(url)
-
+		
 		texto = nome.title() + "\nDólar R$" + str(num/100)
 		
 		com.enviaImagemCaption(mensagem, url, texto, False)
@@ -273,8 +278,22 @@ def botCommands(mensagem, text):
 		if("?" not in text):
 			resposta = "Por favor me faça uma pergunta... (aquelas frases que tem '?')"
 		else:
-			resposta = retiraLista(listaRespostas);
+			resposta = auxf.retiraLista(listaRespostas);
 		
+		r = com.enviaMensagem(mensagem, resposta, True)
+		print(r)
+		return
+	
+	if("sadanimesong" in text):
+		with open('animeSadSongs.json', encoding="utf8") as j:
+  			listaMusicas = json.load(j)["songs"]
+		size = len(listaMusicas)
+		
+		#faz um rand
+		rand = random.randrange(0, size) #GERA NUMERO 0 - (size-1)
+		nome = listaMusicas[rand]["name"]
+		link = listaMusicas[rand]["link"]
+		resposta = nome + '\n' + link 
 		r = com.enviaMensagem(mensagem, resposta, True)
 		print(r)
 		return
@@ -331,6 +350,20 @@ def get_doge_image_url():
 			print("Erro ao conseguir URL do doge!")
 			return 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
 		url = contents['url']
+		file_extension = re.search("([^.]*)$",url).group(1).lower()
+	return url
+
+#RETORNA UMA URL DE UMA FOTO DE UM PASSARO
+def get_birb_image_url():
+	allowed_extension = ['jpg','jpeg','png']
+	file_extension = '' 
+	while file_extension not in allowed_extension:
+		try:
+			contents = requests.get('https://some-random-api.ml/img/birb').json()
+		except Exception as e:
+			print("Erro ao conseguir URL do doge!")
+			return 'https://www.google.com.br/url?sa=i&url=https%3A%2F%2Fnl.pinterest.com%2Fpin%2F794463190487111091%2F&psig=AOvVaw0nP8Ox7Gi0zHitacdeUj2j&ust=1584747601061000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCID2g4Pbp-gCFQAAAAAdAAAAABAD'
+		url = contents['link']
 		file_extension = re.search("([^.]*)$",url).group(1).lower()
 	return url
 
