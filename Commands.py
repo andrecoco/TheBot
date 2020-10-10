@@ -1,20 +1,63 @@
 import json
 import requests
 import time
-#https://docs.python.org/3/library/random.html
 import random
 import re
 import math
 import AuxiliaryFunctions as auxf
+import db
 
 from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryResultPhoto
 
-#command to test something
-def test(update, context):
-    print(type(update))
+def db_test(update, context):
+    if(auxf.check_admin(update.message.from_user.id)):
+        update.message.reply_text(db.test())
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def db_printa_msgs(update, context):
+    if(auxf.check_admin(update.message.from_user.id)):
+        update.message.reply_text(db.printa_mensagens())
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def db_insere_msg(update, context):
+    db.insere_mensagem(update)
+
+def db_restart(update, context):
+    if(auxf.check_admin(update.message.from_user.id)):
+        update.message.reply_text("Setting Up DB...")
+        db.setup()
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def db_clear_resumo(update, context):
+    if(auxf.check_admin(update.message.from_user.id)):
+        update.message.reply_text("Limpando Resumo...")
+        db.limpa_resumo()
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Opa, eae? (eu so mandei essa mensagem por educacao, eu ainda nao sei conversar)")
+
+def barbixas(update, context):
+    arquivo = open('videosBarbixas.json', encoding='utf-8')
+    lista = json.load(arquivo)["videos"]
+    index = random.randrange(0, 502) #GERA NUMERO 0-501
+    #titulo = lista[index]["titulo"]
+    link = "https://www.youtube.com/watch?v=" + lista[index]["id"]
+    update.message.reply_text(link)
+    
+def resumo(update, context):
+    try:
+        text, media_id = db.resumo(update.message.chat.id)
+        if(media_id is None):
+            update.message.reply_text(text)
+        else:
+            update.message.reply_photo(photo=media_id, quote=True, caption=text)
+    except Exception as error :
+        print("Error during Commands.resumo() function" +  str(error))
 
 def meme_generator(update, context):
     query = update.inline_query.query
@@ -77,6 +120,17 @@ def meme_generator(update, context):
     ]
 
     update.inline_query.answer(results)
+
+def shame(update, context):
+    txt = "vergonha (shilap) vergonha (plim plim plim) vergonha (shilap)"
+    
+    update.message.delete() #apaga o comando, pra ficar mais clean
+    
+    if(update.message.reply_to_message != None):
+        idMessageReplied = update.message.reply_to_message.message_id    
+        update.message.reply_text(txt, reply_to_message_id=idMessageReplied)
+    else:
+        update.message.reply_text(txt, quote=False)
 
 def inline_function(update, context):
     query = update.inline_query.query
@@ -451,6 +505,25 @@ def acende(update, context):
     time.sleep(s)
     update.message.reply_text(msgs[len(msgs) - 1], quote=False)
 
+def weather(update, context):
+    #https://rapidapi.com/community/api/open-weather-map
+    url = "https://community-open-weather-map.p.rapidapi.com/weather"
+    city = "Aracruz" + ",br"
+    querystring = {"id":"2172797","lang":"pt","units":"metric","mode":"xml%2C html","q":city}
+    headers = {
+        'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com",
+        'x-rapidapi-key': "a60147ee0amshb90cc40b579f78ap1b711ejsn3a0fec8b9f69"
+        }
+    response = requests.request("GET", url, headers=headers, params=querystring).json()
+    desc = response["weather"][0]["description"]
+    temp = response["main"]["temp"]
+    t_max = response["main"]["temp_min"]
+    t_min = response["main"]["temp_max"]
+    local = response["name"]
+    print(local)
+    print(str(desc).title())
+    print("Temperatura - " + str(temp))
+    print("Minima - " + str(t_min) + " Maxima - " + str(t_max))
 
 ######### FUNCOES AUXILIARES ###########
 #RETORNA UMA URL DE UMA FOTO DE GATO

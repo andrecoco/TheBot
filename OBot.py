@@ -1,76 +1,82 @@
 import telegram
+import os
+import sys
+import db
+
+def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
+    """Handler for unhandled exceptions that will write to the logs"""
+    if issubclass(exc_type, KeyboardInterrupt):
+        # call the default excepthook saved at __excepthook__
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    print("Unhandled exception", exc_type, exc_value, exc_traceback)
+
+sys.excepthook = handle_unhandled_exception
+
+################
 
 #Read Token
-f = open("config/token", "r")
-TOKEN = f.readline()
+TOKEN = os.getenv("TOKEN")
+PORT = int(os.environ.get('PORT', 5000))
 
 from telegram.ext import Updater
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
-import logging
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+#SETUP DB
+db.setup()
 
 #SET ALL COMMAND_HANDLERS
 from telegram.ext import CommandHandler, Filters, InlineQueryHandler
 from Commands import *
-test_handler        = CommandHandler('test', test, filters=~Filters.update.edited_message)
-start_handler       = CommandHandler('start', start, filters=~Filters.update.edited_message)
-dorimetor_handler   = CommandHandler('dorimetor', dorimetor, filters=~Filters.update.edited_message)
-dorimes_handler     = CommandHandler('dorimes', dorimes, filters=~Filters.update.edited_message)
-rolld20_handler     = CommandHandler('rolld20', rolld20, filters=~Filters.update.edited_message)
-doge_handler        = CommandHandler('doge', doge, filters=~Filters.update.edited_message)
-cat_handler         = CommandHandler('cat', cat, filters=~Filters.update.edited_message)
-birb_handler        = CommandHandler('birb', birb, filters=~Filters.update.edited_message)
-dolar_handler       = CommandHandler('dolar', pokeDolar, filters=~Filters.update.edited_message)
-euro_handler        = CommandHandler('euro', euro, filters=~Filters.update.edited_message)
-libra_handler       = CommandHandler('libra', libra, filters=~Filters.update.edited_message)
-iene_handler        = CommandHandler('iene', iene, filters=~Filters.update.edited_message)
-bitcoin_handler     = CommandHandler('bitcoin', bitcoin, filters=~Filters.update.edited_message)
-litecoin_handler    = CommandHandler('litecoin', litecoin, filters=~Filters.update.edited_message)
-ethereum_handler    = CommandHandler('ethereum', ethereum, filters=~Filters.update.edited_message)
-charada_handler     = CommandHandler('charada', charada, filters=~Filters.update.edited_message)
-hug_handler         = CommandHandler('hug', hug, filters=~Filters.update.edited_message)
-wink_handler        = CommandHandler('wink', wink, filters=~Filters.update.edited_message)
-pat_handler         = CommandHandler('pat', pat, filters=~Filters.update.edited_message)
-meme_handler        = CommandHandler('meme', meme, filters=~Filters.update.edited_message)
-sabedoria_handler   = CommandHandler('sabedoria', sabedoria, filters=~Filters.update.edited_message)
-sadanimesong_handler = CommandHandler('sadanimesong', sadanimesong, filters=~Filters.update.edited_message)
-acende_handler      = CommandHandler('acende', acende, filters=~Filters.update.edited_message)
-#inline_handler      = InlineQueryHandler(inline_function)
-inline_handler      = InlineQueryHandler(meme_generator)
 
-dispatcher.add_handler(test_handler)
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(dorimetor_handler)
-dispatcher.add_handler(dorimes_handler)
-dispatcher.add_handler(rolld20_handler)
-dispatcher.add_handler(doge_handler)
-dispatcher.add_handler(cat_handler)
-dispatcher.add_handler(birb_handler)
-dispatcher.add_handler(dolar_handler)
-dispatcher.add_handler(euro_handler)
-dispatcher.add_handler(libra_handler)
-dispatcher.add_handler(iene_handler)
-dispatcher.add_handler(bitcoin_handler)
-dispatcher.add_handler(litecoin_handler)
-dispatcher.add_handler(ethereum_handler)
-dispatcher.add_handler(charada_handler)
-dispatcher.add_handler(hug_handler)
-dispatcher.add_handler(wink_handler)
-dispatcher.add_handler(pat_handler)
-dispatcher.add_handler(meme_handler)
-dispatcher.add_handler(sabedoria_handler)
-dispatcher.add_handler(sadanimesong_handler)
-dispatcher.add_handler(acende_handler)
-dispatcher.add_handler(inline_handler)
+command_handlers = []
+command_handlers.append(CommandHandler('start', start, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dorimetor', dorimetor, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dorimes', dorimes, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('rolld20', rolld20, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('doge', doge, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('cat', cat, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('birb', birb, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dolar', pokeDolar, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('euro', euro, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('libra', libra, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('iene', iene, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('bitcoin', bitcoin, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('litecoin', litecoin, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('ethereum', ethereum, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('charada', charada, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('hug', hug, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('wink', wink, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('pat', pat, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('meme', meme, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('sabedoria', sabedoria, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('sadanimesong', sadanimesong, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('acende', acende, filters=~Filters.update.edited_message))
+#command_handlers.append(CommandHandler('weather', weather, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('shame', shame, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('resumo', resumo, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('barbixas', barbixas, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dbtest', db_test, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dbprint', db_printa_msgs, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dbrestart', db_restart, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('dbclearesumo', db_clear_resumo, filters=~Filters.update.edited_message))
+#command_handlers.append(InlineQueryHandler(inline_function))
+#command_handlers.append(InlineQueryHandler(meme_generator))
+
+for handler in command_handlers:
+    dispatcher.add_handler(handler)
 
 #NON COMMANDS
 from telegram.ext import MessageHandler
 dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'triste', re.IGNORECASE)), triste))
+dispatcher.add_handler(MessageHandler(~Filters.update.edited_message, db_insere_msg))
 
 #START BOT
-updater.start_polling()
+heroku_link = os.getenv("HEROKU_LINK")
+updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+updater.bot.setWebhook(heroku_link + TOKEN)
+
 updater.idle()
-updater.stop()

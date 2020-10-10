@@ -1,0 +1,5 @@
+python-telegram-bot
+tinydb
+DateTime
+requests
+psycopg2

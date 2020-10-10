@@ -1,5 +1,13 @@
 #Funcoes auxiliares utilizadas por outras
 import random
+import os
+
+def check_admin(id):
+    ids = os.getenv("ADMIN")
+    ids = ids.split(',')
+    if(str(id) in ids):
+        return True
+    return False
 
 #EXTRAI CAMPOS DE json
 def extract_values(obj, key):
