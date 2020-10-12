@@ -6,6 +6,7 @@ Eu tô usando o addon "Heroku Postgres", pra guardar as coisas.
 
 ## Como Configurar
 No heroku é preciso colocar essa variáveis de ambiente.
+
 ADMIN -> ID do Telegram dos usuários com permissão para executar todos os comandos (separados por vírgula).
 
 DATABASE_URL -> URL do banco de dados (se usar o addon nele tem lá essa URL)
