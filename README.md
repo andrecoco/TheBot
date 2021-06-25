@@ -1,5 +1,5 @@
 # TheBot
-Um Bot que meio que faz um monte de coisa basicamente inúteis, porém possivelmente interessantes.
+Um Bot que meio que faz um monte de coisas basicamente inúteis, porém possivelmente interessantes.
 
 Acho que o mais fácil é rodar no Heroku, usando webhook.
 Eu tô usando o addon "Heroku Postgres", pra guardar as coisas.
