@@ -6,6 +6,7 @@ import re
 import math
 import AuxiliaryFunctions as auxf
 import db
+from Pymoe import Anilist
 
 from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryResultPhoto
 
@@ -37,6 +38,32 @@ def db_clear_resumo(update, context):
         db.limpa_resumo()
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def anime_recomendation(update, context):
+    instance = Anilist()
+    texto = update.message.text.strip().replace('/anime', '')
+    if(len(texto) > 0):
+        results = instance.search.anime(texto)
+        animes = results['data']['Page']['media']
+        anime = auxf.retiraLista(animes)
+        
+        #NSFW Filter
+        
+        if(anime['isAdult']):
+            Ok = False
+            for anime in animes:
+                if(not anime['isAdult']):
+                    Ok = True
+                    break
+            if(not Ok):
+                update.message.reply_text("Só veio +18, procure outra coisa pls")
+                return
+
+        media_link = anime['coverImage']['large']
+        text = anime['title']['romaji']
+        update.message.reply_photo(photo=media_link, quote=True, caption=text)
+    else:
+        update.message.reply_text("Digite algum termo pls\ngetanime *termo*")
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Opa, eae? (eu so mandei essa mensagem por educacao, eu ainda nao sei conversar)")
