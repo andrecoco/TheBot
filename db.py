@@ -127,7 +127,7 @@ def insere_img_transparente(update):
     chatid = update.message.chat.id
     name = update.message.text
     fileid = update.message.photo
-    if(media is not None and len(media) > 0):
+    if(fileid is not None and len(fileid) > 0):
         fileid = fileid[0].file_id
     else:
         fileid = None
@@ -143,7 +143,7 @@ def insere_img_transparente(update):
         connection = connect_to_db()
         cursor = connection.cursor()
 
-        postgres_insert_query = """ INSERT INTO IMGTRANSPARENTE (CHATID, NOME, FILEID, DATA) VALUES (%s,%s,%s, current_timestamp)"""
+        postgres_insert_query = """ INSERT INTO imgtransparente (CHATID, NOME, FILEID, DATA) VALUES (%s,%s,%s, current_timestamp)"""
         record_to_insert = (chatid, name, fileid)
         cursor.execute(postgres_insert_query, record_to_insert)
 
@@ -172,7 +172,6 @@ def get_transparent_image(update):
                         AND
                             NOME = %s''', [chatid, name])
         fileid = cursor.fetchall() 
-        
         print(fileid)
         print(type(fileid))
 
