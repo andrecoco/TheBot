@@ -162,7 +162,6 @@ def insere_img_transparente(update):
     return True
 
 def get_transparent_image(update):
-    chatid = str(update.message.chat.id)
     name = update.message.text.replace('/get_ti', '').strip()
     try:
         connection = connect_to_db()
@@ -170,11 +169,8 @@ def get_transparent_image(update):
         cursor.execute('''SELECT FILEID FROM 
                             IMGTRANSPARENTE
                         WHERE
-                            CHATID = %s
-                        AND
-                            NOME = %s''', [chatid, name])
-        fileid = cursor.fetchall() 
-        print(fileid[0][0])
+                            NOME = %s''', [name])
+        fileid = cursor.fetchall()
 
     except (Exception, psycopg2.Error) as error :
         fileid = "Error while fetching data from PostgreSQL" + str(error)
