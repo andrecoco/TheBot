@@ -53,7 +53,8 @@ def insert_transparent_image(update, context):
 def get_transparent_image(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
         fileid = db.get_transparent_image(update)
-        update.message.reply_photo(photo=fileid, quote=True)
+        print("File id: ", fileid, str(fileid))
+        update.message.reply_photo(photo=str(fileid), quote=True)
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
