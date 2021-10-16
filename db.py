@@ -163,7 +163,7 @@ def insere_img_transparente(update):
 
 def get_transparent_image(update):
     chatid = str(update.message.chat.id)
-    name = update.message.text
+    name = update.message.text.replace('/get_ti', '').strip()
     print("nome = ", name)
     try:
         connection = connect_to_db()
