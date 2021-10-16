@@ -17,7 +17,7 @@ sys.excepthook = handle_unhandled_exception
 
 #Read Token
 TOKEN = os.getenv("TOKEN")
-PORT = int(os.environ.get('PORT', 5000))
+PORT = int(os.environ.get('PORT', 8443))
 
 from telegram.ext import Updater
 updater = Updater(token=TOKEN, use_context=True)
@@ -79,7 +79,8 @@ dispatcher.add_handler(MessageHandler(~Filters.update.edited_message, db_insere_
 heroku_link = os.getenv("HEROKU_LINK")
 updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
-                          url_path=TOKEN)
-updater.bot.setWebhook(heroku_link + TOKEN)
+                          url_path=TOKEN,
+                          webhook_url="https://<appname>.herokuapp.com/" + TOKEN)
+#updater.bot.setWebhook(heroku_link + TOKEN)
 
 updater.idle()
