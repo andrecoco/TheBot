@@ -80,7 +80,7 @@ heroku_link = os.getenv("HEROKU_LINK")
 updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
                           url_path=TOKEN,
-                          webhook_url="https://<appname>.herokuapp.com/" + TOKEN)
+                          webhook_url=heroku_link + TOKEN)
 #updater.bot.setWebhook(heroku_link + TOKEN)
 
 updater.idle()
