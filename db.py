@@ -170,7 +170,7 @@ def get_transparent_image(update):
                         WHERE
                             CHATID = %s
                         AND
-                            NAME = %s''', [chat_id, name])
+                            NAME = %s''', [chatid, name])
         fileid = cursor.fetchall() 
 
     except (Exception, psycopg2.Error) as error :
