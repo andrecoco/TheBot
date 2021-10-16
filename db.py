@@ -174,13 +174,13 @@ def get_transparent_image(update):
                         AND
                             NOME = %s''', [chatid, name])
         fileid = cursor.fetchall() 
-        print(fileid[0])
+        print(fileid[0][0])
 
     except (Exception, psycopg2.Error) as error :
         fileid = "Error while fetching data from PostgreSQL" + str(error)
     
     finally:
-        return fileid[0]
+        return fileid[0][0]
 
 #For now, ignore stickers
 def insere_mensagem(update):
