@@ -126,11 +126,12 @@ def setup(): #create the tables if necessary, and clean old entries
 def insere_img_transparente(update):
     chatid = update.message.chat.id
     name = update.message.text
-    fileid = update.message.photo
+    fileid = update.message.reply_to_message.photo
     if(fileid is not None and len(fileid) > 0):
         fileid = fileid[0].file_id
     else:
-        fileid = None
+        print("Sem imagem para inserir...")
+        return
     '''else:
         media = update.message.sticker
         if(media is not None):

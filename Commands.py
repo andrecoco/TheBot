@@ -41,6 +41,9 @@ def db_clear_resumo(update, context):
 
 def insert_transparent_image(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
+        if(update.message.reply_to_message is None):
+            print("Dê reply em uma imagem pls!")
+            return
         name = update.message.text
         if(name is None):
             update.message.reply_text("Manda o nome da imagem aí irmão.")
