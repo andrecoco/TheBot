@@ -164,7 +164,6 @@ def insere_img_transparente(update):
 def get_transparent_image(update):
     chatid = str(update.message.chat.id)
     name = update.message.text.replace('/get_ti', '').strip()
-    print("nome = ", name)
     try:
         connection = connect_to_db()
         cursor = connection.cursor()
@@ -175,14 +174,13 @@ def get_transparent_image(update):
                         AND
                             NOME = %s''', [chatid, name])
         fileid = cursor.fetchall() 
-        print(fileid)
-        print(type(fileid))
+        print(fileid[0])
 
     except (Exception, psycopg2.Error) as error :
         fileid = "Error while fetching data from PostgreSQL" + str(error)
     
     finally:
-        return fileid
+        return fileid[0]
 
 #For now, ignore stickers
 def insere_mensagem(update):
