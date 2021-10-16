@@ -39,6 +39,27 @@ def db_clear_resumo(update, context):
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
+def insert_transparent_image(update, context):
+     if(auxf.check_admin(update.message.from_user.id)):
+        name = update.message.text
+        if(name is None):
+            update.message.reply_text("Manda o nome da imagem aí irmão.")
+            return
+        db.insere_img_transparente(update)
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+# Test function
+def get_transparent_image(update, context):
+    if(auxf.check_admin(update.message.from_user.id)):
+        fileid = db.get_transparent_image(update)
+        update.message.reply_photo(photo=fileid, quote=True)
+    else:
+        update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def merge_transparent_image(update, context):
+    pass
+
 def anime_recomendation(update, context):
     instance = Anilist()
     texto = update.message.text.strip().replace('/anime', '')

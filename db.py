@@ -87,7 +87,27 @@ def setup_resumo(cursor, connection):
         connection.commit()
 
     except (Exception, psycopg2.DatabaseError) as error :
-        print("Error while creating PostgreSQL table", error)
+        print("Error while creating PostgreSQL resumo table", error)
+        return False
+    return True
+
+def setup_transparente(cursor, connection):
+    # Guarda imagens transparentes pro comando merge
+    try:
+        #create table if not exists
+        create_table_query = '''CREATE TABLE IF NOT EXISTS IMGTRANSPARENTE(
+            ID             SERIAL       PRIMARY KEY         ,
+            CHATID         TEXT                    NOT NULL ,
+            NOME           TEXT                             ,
+            FILEID         TEXT                    NOT NULL ,
+            DATA           TIMESTAMP               NOT NULL
+        );'''
+        cursor.execute(create_table_query)
+
+        connection.commit()
+
+    except (Exception, psycopg2.DatabaseError) as error :
+        print("Error while creating PostgreSQL transparente_img table", error)
         return False
     return True
 
@@ -99,8 +119,65 @@ def setup(): #create the tables if necessary, and clean old entries
 
     cursor = connection.cursor()
     setup_resumo(cursor, connection)
+    setup_transparente(cursor, connection)
     close_connection(cursor, connection)
     return True
+
+def insere_img_transparente(update):
+    chatid = update.message.chat.id
+    name = update.message.text
+    fileid = update.message.photo
+    if(media is not None and len(media) > 0):
+        fileid = fileid[0].file_id
+    else:
+        fileid = None
+    '''else:
+        media = update.message.sticker
+        if(media is not None):
+           media = media.file_id'''
+    
+    if(fileid is None and name is None):
+        return
+
+    try:
+        connection = connect_to_db()
+        cursor = connection.cursor()
+
+        postgres_insert_query = """ INSERT INTO IMGTRANSPARENTE (CHATID, NOME, FILEID, DATA) VALUES (%s,%s,%s, current_timestamp)"""
+        record_to_insert = (chatid, name, fileid)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        connection.commit()
+        count = cursor.rowcount
+        print (count, "Record inserted successfully into imagem_transparente table")
+
+    except (Exception, psycopg2.Error) as error :
+        print("Failed to insert record into imagem_transparente table", error)
+
+    finally:
+        close_connection(cursor, connection)
+
+    return True
+
+def get_transparent_image(update):
+    chatid = update.message.chat.id
+    name = update.message.text
+    try:
+        connection = connect_to_db()
+        cursor = connection.cursor()
+        cursor.execute('''SELECT * FROM 
+                            IMGTRANSPARENTE
+                        WHERE
+                            CHATID = %s
+                        AND
+                            NAME = %s''', [chat_id, name])
+        fileid = cursor.fetchall() 
+
+    except (Exception, psycopg2.Error) as error :
+        fileid = "Error while fetching data from PostgreSQL" + str(error)
+    
+    finally:
+        return fileid
 
 #For now, ignore stickers
 def insere_mensagem(update):
@@ -129,10 +206,10 @@ def insere_mensagem(update):
 
         connection.commit()
         count = cursor.rowcount
-        print (count, "Record inserted successfully into mobile table")
+        print (count, "Record inserted successfully into mensagens table")
 
     except (Exception, psycopg2.Error) as error :
-        print("Failed to insert record into mobile table", error)
+        print("Failed to insert record into mensagens table", error)
 
     finally:
         close_connection(cursor, connection)
