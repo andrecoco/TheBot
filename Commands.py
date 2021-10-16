@@ -40,7 +40,7 @@ def db_clear_resumo(update, context):
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
 def insert_transparent_image(update, context):
-     if(auxf.check_admin(update.message.from_user.id)):
+    if(auxf.check_admin(update.message.from_user.id)):
         name = update.message.text
         if(name is None):
             update.message.reply_text("Manda o nome da imagem aí irmão.")
