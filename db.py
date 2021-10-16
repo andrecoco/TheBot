@@ -165,13 +165,16 @@ def get_transparent_image(update):
     try:
         connection = connect_to_db()
         cursor = connection.cursor()
-        cursor.execute('''SELECT * FROM 
+        cursor.execute('''SELECT FILEID FROM 
                             IMGTRANSPARENTE
                         WHERE
                             CHATID = %s
                         AND
                             NOME = %s''', [chatid, name])
         fileid = cursor.fetchall() 
+        
+        print(fileid)
+        print(type(fileid))
 
     except (Exception, psycopg2.Error) as error :
         fileid = "Error while fetching data from PostgreSQL" + str(error)
