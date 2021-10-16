@@ -62,6 +62,8 @@ command_handlers.append(CommandHandler('dbprint', db_printa_msgs, filters=~Filte
 command_handlers.append(CommandHandler('dbrestart', db_restart, filters=~Filters.update.edited_message))
 command_handlers.append(CommandHandler('dbclearesumo', db_clear_resumo, filters=~Filters.update.edited_message))
 command_handlers.append(CommandHandler('anime', anime_recomendation, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('insert_ti', insert_transparent_image, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('get_ti', get_transparent_image, filters=~Filters.update.edited_message))
 #command_handlers.append(InlineQueryHandler(inline_function))
 #command_handlers.append(InlineQueryHandler(meme_generator))
 
