@@ -128,7 +128,7 @@ def insere_img_transparente(update):
     name = update.message.text
     name = name.replace('/insert_ti', '').strip()
     fileid = update.message.reply_to_message.document.file_id
-    if(fileid is None or len(fileid) > 0):
+    if(fileid is None or len(fileid) == 0):
         print("Sem imagem para inserir...")
         return
     
