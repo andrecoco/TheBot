@@ -5,4 +5,3 @@ requests
 psycopg2
 Pymoe
 pillow
-glob3
