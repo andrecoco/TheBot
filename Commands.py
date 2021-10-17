@@ -7,6 +7,7 @@ import math
 import AuxiliaryFunctions as auxf
 import db
 from Pymoe import Anilist
+import florto
 
 from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryResultPhoto
 
@@ -57,7 +58,7 @@ def get_transparent_image(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
         fileid = db.get_transparent_image(update)
         print("File id: ", fileid, str(fileid))
-        update.message.reply_document(photo=str(fileid), quote=True)
+        update.message.reply_document(document=str(fileid), quote=True)
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
