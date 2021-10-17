@@ -56,7 +56,8 @@ def insert_transparent_image(update, context):
 # Test function
 def get_transparent_image(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
-        fileid = db.get_transparent_image(update)
+        name = update.message.text.replace('/get_ti', '').strip()
+        fileid = db.get_transparent_image(name)
         print("File id: ", fileid, str(fileid))
         update.message.reply_document(document=str(fileid), quote=True)
     else:

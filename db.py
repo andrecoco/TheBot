@@ -155,8 +155,7 @@ def insere_img_transparente(update):
 
     return True
 
-def get_transparent_image(update):
-    name = update.message.text.replace('/get_ti', '').strip()
+def get_transparent_image(name):
     try:
         connection = connect_to_db()
         cursor = connection.cursor()
