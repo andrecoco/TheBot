@@ -9,14 +9,14 @@ def paste_image(background_id, context, front_name = 'florto'):
     front_id = db.get_transparent_image(front_name)
     front_file = context.bot.getFile(front_id)
     background_file = context.bot.getFile(background_id)
-    front_downloaded = front_file.download("./res/")
-    back_downloaded = background_file.download("./res/")
+    front_downloaded = front_file.download("./res/front")
+    back_downloaded = background_file.download("./res/back")
     print(front_downloaded)
     print(back_downloaded)
 
     # Open Front Image
-    frontImage = Image.open(front_downloaded)
-    background = Image.open(back_downloaded)
+    frontImage = Image.open("./res/front")
+    background = Image.open("./res/back")
     
     # Convert images to RGBA
     frontImage = frontImage.convert("RGBA")
