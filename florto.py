@@ -4,7 +4,7 @@ import telegram
 import db
 import glob
 
-def paste_image(background_id, front_name = 'florto', context: CallbackContext):
+def paste_image(background_id, context, front_name = 'florto'):
     #get images
     front_id = db.get_transparent_image(front_name)
     front_file = context.bot.getFile(front_id)

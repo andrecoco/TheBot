@@ -71,7 +71,7 @@ def merge_transparent_image(update, context):
         else:
             print("De reply numa foto!")
             return
-        florto.paste_image(media)
+        florto.paste_image(media, context)
         image = open('./res/new.png', 'rb')
         update.message.reply_photo(photo=image)
         florto.clear()
