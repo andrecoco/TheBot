@@ -1,13 +1,14 @@
 from PIL import Image
 from PIL import ImageOps
+import telegram
 import db
 import glob
 
-def paste_image(background_id, front_name = 'florto'):
+def paste_image(background_id, front_name = 'florto', context: CallbackContext):
     #get images
     front_id = db.get_transparent_image(front_name)
-    front_file = get_file(front_id)
-    background_file = get_file(background_id)
+    front_file = context.bot.getFile(front_id)
+    background_file = context.bot.getFile(background_id)
     front_downloaded = front_file.download("./res/")
     back_downloaded = background_file.download("./res/")
     print(front_downloaded)
