@@ -16,10 +16,12 @@ def paste_image(background_id, context, front_name = 'florto'):
     # Open Front Image
     frontImage = Image.open(front_downloaded)
     background = Image.open(back_downloaded)
-    
+    print(background.size[0], background.size[1])
+
     # Convert images to RGBA
     frontImage = frontImage.convert("RGBA")
     background = background.convert("RGBA")
+    print(background.size[0], background.size[1])
 
     # Resize things
     ## makes background square (cropping)
@@ -32,10 +34,10 @@ def paste_image(background_id, context, front_name = 'florto'):
         background = ImageOps.crop(background, border)
 
     ## makes background 640x640
-    '''basewidth = 640
+    basewidth = 640
     wpercent = (basewidth/float(background.size[0]))
     hsize = int((float(background.size[1])*float(wpercent)))
-    background = background.resize((basewidth,hsize), Image.ANTIALIAS)'''
+    background = background.resize((basewidth,hsize), Image.ANTIALIAS)
 
     ## makes front imagem 320 x 320
     basewidth = 520
