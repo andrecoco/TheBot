@@ -9,6 +9,16 @@ def check_admin(id):
         return True
     return False
 
+def is_blacklisted(id):
+    ids = os.getenv("CHAT_BLACKLIST")
+    ids = ids.split(',')
+    if(str(id) in ids):
+        return True
+    return False
+
+def is_private_chat(update):
+    return update.message.chat.type == 'private'
+
 #EXTRAI CAMPOS DE json
 def extract_values(obj, key):
     """Recursively pull values of specified key from nested JSON."""

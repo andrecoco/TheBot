@@ -64,7 +64,7 @@ def get_transparent_image(update, context):
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
 def merge_transparent_image(update, context):
-    if(auxf.check_admin(update.message.from_user.id)):
+    if(auxf.check_admin(update.message.from_user.id) or auxf.is_private_chat(update)):
         media = update.message.reply_to_message.photo
         if(media is not None and len(media) > 0):
             media = media[-1].file_id
