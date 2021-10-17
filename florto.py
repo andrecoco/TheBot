@@ -3,6 +3,7 @@ from PIL import ImageOps
 import telegram
 import db
 import glob
+import os
 
 def paste_image(background_id, context, front_name = 'florto'):
     #get images
@@ -11,12 +12,10 @@ def paste_image(background_id, context, front_name = 'florto'):
     background_file = context.bot.getFile(background_id)
     front_downloaded = front_file.download("./res/front")
     back_downloaded = background_file.download("./res/back")
-    print(front_downloaded)
-    print(back_downloaded)
 
     # Open Front Image
-    frontImage = Image.open("./res/front")
-    background = Image.open("./res/back")
+    frontImage = Image.open(front_downloaded)
+    background = Image.open(back_downloaded)
     
     # Convert images to RGBA
     frontImage = frontImage.convert("RGBA")
@@ -24,13 +23,13 @@ def paste_image(background_id, context, front_name = 'florto'):
 
     # Resize things
     ## makes background square (cropping)
-    if(background.size[0] != background.size[1]):
+    '''if(background.size[0] != background.size[1]):
         diff = abs(background.size[0] - background.size[1])
         if(background.size[0] > background.size[1]):
             border = (diff/2, 0, diff/2, 0)
         else:
             border = (0, diff/2, 0, diff/2)
-        background = ImageOps.crop(background, border)
+        background = ImageOps.crop(background, border)'''
 
     ## makes background 640x640
     basewidth = 640
