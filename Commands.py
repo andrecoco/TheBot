@@ -67,7 +67,7 @@ def merge_transparent_image(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
         media = update.message.reply_to_message.photo
         if(media is not None and len(media) > 0):
-            media = media[0].file_id
+            media = media[-1].file_id
         else:
             print("De reply numa foto!")
             return

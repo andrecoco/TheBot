@@ -16,12 +16,10 @@ def paste_image(background_id, context, front_name = 'florto'):
     # Open Front Image
     frontImage = Image.open(front_downloaded)
     background = Image.open(back_downloaded)
-    print(background.size[0], background.size[1])
 
     # Convert images to RGBA
     frontImage = frontImage.convert("RGBA")
     background = background.convert("RGBA")
-    print(background.size[0], background.size[1])
 
     # Resize things
     ## makes background square (cropping)
