@@ -1,8 +1,9 @@
 from PIL import Image
 from PIL import ImageOps
 import db
+import glob
 
-def paste_image(background_id, front_name):
+def paste_image(background_id, front_name = 'florto'):
     #get images
     front_id = db.get_transparent_image(front_name)
     front_file = get_file(front_id)
@@ -49,3 +50,8 @@ def paste_image(background_id, front_name):
     
     # Save
     background.save("./res/new.png", format="png")
+
+def clear():
+    files = glob.glob('./res/*')
+    for f in files:
+        os.remove(f)
