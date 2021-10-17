@@ -1,0 +1,51 @@
+from PIL import Image
+from PIL import ImageOps
+import db
+
+def paste_image(background_id, front_name):
+    #get images
+    front_id = db.get_transparent_image(front_name)
+    front_file = get_file(front_id)
+    background_file = get_file(background_id)
+    front_downloaded = front_file.download("./res/")
+    back_downloaded = background_file.download("./res/")
+    print(front_downloaded)
+    print(back_downloaded)
+
+    # Open Front Image
+    frontImage = Image.open(front_downloaded)
+    background = Image.open(back_downloaded)
+    
+    # Convert images to RGBA
+    frontImage = frontImage.convert("RGBA")
+    background = background.convert("RGBA")
+
+    # Resize things
+    ## makes background square (cropping)
+    if(background.size[0] != background.size[1]):
+        diff = abs(background.size[0] - background.size[1])
+        if(background.size[0] > background.size[1]):
+            border = (diff/2, 0, diff/2, 0)
+        else:
+            border = (0, diff/2, 0, diff/2)
+        background = ImageOps.crop(background, border)
+
+    ## makes background 640x640
+    basewidth = 640
+    wpercent = (basewidth/float(background.size[0]))
+    hsize = int((float(background.size[1])*float(wpercent)))
+    background = background.resize((basewidth,hsize), Image.ANTIALIAS)
+
+    ## makes front imagem 320 x 320
+    basewidth = 520
+    wpercent = (basewidth/float(frontImage.size[0]))
+    hsize = int((float(frontImage.size[1])*float(wpercent)))
+    frontImage = frontImage.resize((basewidth,hsize), Image.ANTIALIAS)
+
+    # Paste imagem on center and bottom
+    width = (background.width - frontImage.width) // 2
+    height = (background.height - frontImage.height)
+    background.paste(frontImage, (width, height), frontImage)
+    
+    # Save
+    background.save("./res/new.png", format="png")

@@ -26,6 +26,12 @@ dispatcher = updater.dispatcher
 #SETUP DB
 db.setup()
 
+#SETUP FLORTO
+try:
+    os.makedirs('res')
+except OSError as e:
+    pass
+
 #SET ALL COMMAND_HANDLERS
 from telegram.ext import CommandHandler, Filters, InlineQueryHandler
 from Commands import *
