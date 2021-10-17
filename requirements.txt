@@ -4,4 +4,5 @@ DateTime
 requests
 psycopg2
 Pymoe
-PIL
+pillow
+glob3
