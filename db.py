@@ -127,7 +127,7 @@ def insere_img_transparente(update):
     chatid = update.message.chat.id
     name = update.message.text
     name = name.replace('/insert_ti', '').strip()
-    fileid = update.message.reply_to_message.document
+    fileid = update.message.reply_to_message.document.file_id
     if(fileid is not None and len(fileid) > 0):
         fileid = fileid[0].file_id
     else:
