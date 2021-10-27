@@ -87,7 +87,7 @@ def weeb_finder(update, context):
         	print("De reply numa foto!")
         	return
 	photo_file = context.bot.getFile(media)
-	photo_downloaded = front_file.download("./res/anime_img")
+	photo_downloaded = photo_file.download("./res/anime_img")
 	#TraceMoe API
 	resp = requests.post("https://api.trace.moe/search",
 	  data=open("anime_img", "rb"),
