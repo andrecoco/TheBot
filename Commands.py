@@ -96,7 +96,7 @@ def weeb_finder(update, context):
 	anime_id = resp["result"][0]["anilist"]
 	similarity = resp["result"][0]["similarity"]
 	img = resp["result"][0]["image"]
-	if not result["episode"]:
+	if not resp["result"][0]["episode"]:
 		episode = "Não aplicável"
 	else:
 		episode = resp["result"][0]["episode"]
