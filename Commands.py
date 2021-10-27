@@ -93,9 +93,9 @@ def weeb_finder(update, context):
 	  data=open("./res/anime_img", "rb"),
 	  headers={"Content-Type": "image/jpeg"}
 	).json()
-	anime_id = resp["result"]["anilist"]
-	similarity = resp["result"]["similarity"]
-	img = resp["result"]["image"]
+	anime_id = resp["result"][0]["anilist"]
+	similarity = resp["result"][0]["similarity"]
+	img = resp["result"][0]["image"]
 	
 	#Anilist API #Todo
 	text = "ID = " + str(anime_id) + "\nSimilaridade = " + similarity
