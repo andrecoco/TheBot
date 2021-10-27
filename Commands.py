@@ -74,7 +74,7 @@ def merge_transparent_image(update, context):
         florto.paste_image(media, context)
         image = open('./res/new.png', 'rb')
         update.message.reply_photo(photo=image)
-        florto.clear()
+        #florto.clear()
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
