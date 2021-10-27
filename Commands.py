@@ -78,6 +78,24 @@ def merge_transparent_image(update, context):
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
+def weeb_finder(update, context):
+	#download image
+	photo_file = context.bot.getFile(background_id)
+    	photo_downloaded = front_file.download("./res/anime_img")
+	
+	#TraceMoe API
+	resp = requests.post("https://api.trace.moe/search",
+	  data=open("anime_img", "rb"),
+	  headers={"Content-Type": "image/jpeg"}
+	).json()
+	anime_id = resp["result"]["anilist"]
+	similarity = resp["result"]["similarity"]
+	img = resp["result"]["image"]
+	
+	#Anilist API #Todo
+	text = "ID = " + str(anime_id) + "\nSimilaridade = " + similarity
+	update.message.reply_photo(photo=img, quote=True, caption=text)
+
 def anime_recomendation(update, context):
     instance = Anilist()
     texto = update.message.text.strip().replace('/anime', '')
