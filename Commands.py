@@ -90,7 +90,7 @@ def weeb_finder(update, context):
 	photo_downloaded = photo_file.download("./res/anime_img")
 	#TraceMoe API
 	resp = requests.post("https://api.trace.moe/search",
-	  data=open("anime_img", "rb"),
+	  data=open("./res/anime_img", "rb"),
 	  headers={"Content-Type": "image/jpeg"}
 	).json()
 	anime_id = resp["result"]["anilist"]
