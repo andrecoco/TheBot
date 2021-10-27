@@ -68,7 +68,7 @@ def merge_transparent_image(update, context):
         media = update.message.reply_to_message.photo
         if(media is not None and len(media) > 0):
             media = media[-1].file_id
-        else:
+       	else:
             print("De reply numa foto!")
             return
         florto.paste_image(media, context)
@@ -80,7 +80,13 @@ def merge_transparent_image(update, context):
 
 def weeb_finder(update, context):
 	#download image
-	photo_file = context.bot.getFile(background_id)
+	media = update.message.reply_to_message.photo
+	if(media is not None and len(media) > 0):
+        	media = media[-1].file_id
+	else:
+        	print("De reply numa foto!")
+        	return
+	photo_file = context.bot.getFile(media)
 	photo_downloaded = front_file.download("./res/anime_img")
 	#TraceMoe API
 	resp = requests.post("https://api.trace.moe/search",
