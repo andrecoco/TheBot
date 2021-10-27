@@ -6,6 +6,7 @@ import re
 import math
 import AuxiliaryFunctions as auxf
 import db
+import os
 from Pymoe import Anilist
 import florto
 
