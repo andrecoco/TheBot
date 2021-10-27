@@ -81,8 +81,7 @@ def merge_transparent_image(update, context):
 def weeb_finder(update, context):
 	#download image
 	photo_file = context.bot.getFile(background_id)
-    	photo_downloaded = front_file.download("./res/anime_img")
-	
+	photo_downloaded = front_file.download("./res/anime_img")
 	#TraceMoe API
 	resp = requests.post("https://api.trace.moe/search",
 	  data=open("anime_img", "rb"),
