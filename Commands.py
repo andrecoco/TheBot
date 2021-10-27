@@ -103,8 +103,8 @@ def weeb_finder(update, context):
 	
 	#Anilist API
 	instance = Anilist()
-	print(instance.get.anime(anime_id))
-	text = "ID = " + str(anime_id) + "\nEpisódio= " + str(episode) + "\nSimilaridade = " + str(round(similarity, 2))
+	name = auxf.extract_values(instance.get.anime(anime_id), "romaji")[0]
+	text = "Nome = " + str(name) + "\nEpisódio = " + str(episode) + "\nSimilaridade = " + str(round(similarity, 2))
 	update.message.reply_photo(photo=img, quote=True, caption=text)
 
 def anime_recomendation(update, context):
