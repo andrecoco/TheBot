@@ -101,7 +101,9 @@ def weeb_finder(update, context):
 	else:
 		episode = resp["result"][0]["episode"]
 	
-	#Anilist API #Todo
+	#Anilist API
+	instance = Anilist()
+	print(instance.get.anime(anime_id))
 	text = "ID = " + str(anime_id) + "\nEpisódio= " + str(episode) + "\nSimilaridade = " + str(round(similarity, 2))
 	update.message.reply_photo(photo=img, quote=True, caption=text)
 
