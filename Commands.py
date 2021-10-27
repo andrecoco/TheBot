@@ -102,7 +102,7 @@ def weeb_finder(update, context):
 		episode = resp["result"][0]["episode"]
 	
 	#Anilist API #Todo
-	text = "ID = " + str(anime_id) + "\nEpisódio= " + str(episode) + "\nSimilaridade = " + str(round(result["similarity"], 2))
+	text = "ID = " + str(anime_id) + "\nEpisódio= " + str(episode) + "\nSimilaridade = " + str(round(similarity, 2))
 	update.message.reply_photo(photo=img, quote=True, caption=text)
 
 def anime_recomendation(update, context):
