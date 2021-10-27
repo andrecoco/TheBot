@@ -74,8 +74,6 @@ def merge_transparent_image(update, context):
             return
         florto.paste_image(media, context)
         image = open('./res/new.png', 'rb')
-        print(os.system('file ./res/front'))
-        print(os.system('file ./res/back'))
         update.message.reply_photo(photo=image)
         florto.clear()
     else:
