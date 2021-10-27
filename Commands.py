@@ -69,7 +69,7 @@ def merge_transparent_image(update, context):
         media = update.message.reply_to_message.photo
         if(media is not None and len(media) > 0):
             media = media[-1].file_id
-        else:
+       	else:
             print("De reply numa foto!")
             return
         florto.paste_image(media, context)
@@ -78,6 +78,35 @@ def merge_transparent_image(update, context):
         florto.clear()
     else:
         update.message.reply_text("Você não tem permissão para executar esse comando.")
+
+def weeb_finder(update, context):
+	#download image
+	media = update.message.reply_to_message.photo
+	if(media is not None and len(media) > 0):
+        	media = media[-1].file_id
+	else:
+        	print("De reply numa foto!")
+        	return
+	photo_file = context.bot.getFile(media)
+	photo_downloaded = photo_file.download("./res/anime_img")
+	#TraceMoe API
+	resp = requests.post("https://api.trace.moe/search",
+	  data=open("./res/anime_img", "rb"),
+	  headers={"Content-Type": "image/jpeg"}
+	).json()
+	anime_id = resp["result"][0]["anilist"]
+	similarity = resp["result"][0]["similarity"]
+	img = resp["result"][0]["image"]
+	if not resp["result"][0]["episode"]:
+		episode = "Não aplicável"
+	else:
+		episode = resp["result"][0]["episode"]
+	
+	#Anilist API
+	instance = Anilist()
+	name = auxf.extract_values(instance.get.anime(anime_id), "romaji")[0]
+	text = "Nome = " + str(name) + "\nEpisódio = " + str(episode) + "\nSimilaridade = " + str(round(similarity, 2))
+	update.message.reply_photo(photo=img, quote=True, caption=text)
 
 def anime_recomendation(update, context):
     instance = Anilist()
