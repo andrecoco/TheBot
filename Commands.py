@@ -13,8 +13,8 @@ import florto
 from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryResultPhoto
 
 def echo(update, context):
+    print("opa!")
     if(auxf.check_admin(update.message.from_user.id)):
-        print("opa!")
         text = update.message.text
         text = text.replace('echo', '')
         chat_id = os.getenv("ECHO_CHAT_ID")
