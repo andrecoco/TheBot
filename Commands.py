@@ -14,6 +14,7 @@ from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryR
 
 def echo(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
+        print("opa!")
         text = update.message.text
         text = text.replace('echo', '')
         chat_id = os.getenv("ECHO_CHAT_ID")
