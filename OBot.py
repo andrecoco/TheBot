@@ -82,6 +82,7 @@ for handler in command_handlers:
 from telegram.ext import MessageHandler
 dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'triste', re.IGNORECASE)), triste))
 dispatcher.add_handler(MessageHandler(~Filters.update.edited_message, db_insere_msg))
+dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'echo', re.IGNORECASE)), echo))
 
 #START BOT
 heroku_link = os.getenv("HEROKU_LINK")
