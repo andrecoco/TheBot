@@ -14,7 +14,7 @@ from telegram import InlineQueryResultGif, InputTextMessageContent, InlineQueryR
 
 def echo(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
-        text = update.message.text()
+        text = update.message.text
         text = text.replace('echo', '')
         chat_id = os.getenv("ECHO_CHAT_ID")
         context.bot.sendMessage(chat_id, text)
@@ -34,6 +34,7 @@ def db_printa_msgs(update, context):
         update.message.reply_text("Você não tem permissão para executar esse comando.")
 
 def db_insere_msg(update, context):
+    print(update.message.chat.id)	
     db.insere_mensagem(update)
 
 def db_restart(update, context):
