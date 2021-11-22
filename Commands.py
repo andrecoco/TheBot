@@ -20,7 +20,8 @@ def echo(update, context):
         chat_id = os.getenv("ECHO_CHAT_ID")
         context.bot.sendMessage(chat_id, text)
     else:
-        update.message.reply_text("Você não tem permissão para executar esse comando.")
+        pass
+        #update.message.reply_text("Você não tem permissão para executar esse comando.")
 
 def db_test(update, context):
     if(auxf.check_admin(update.message.from_user.id)):
