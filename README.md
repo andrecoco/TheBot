@@ -24,7 +24,7 @@ No heroku é preciso colocar essas variáveis de ambiente.
 - `/sabedoria (pergunta)?` - Recebe uma resposta muito sábia🧠
 - `/rolld20` - Rola um d20🎲
 - `/dolar` - Envia a cotação do dolar e uma imagem do pokemon de número equivalente💸
-- `/alcoolgel` - Precauções para evitar o espalhamento do víruos COVID-19🦠
+- `/alcoolgel` - Precauções para evitar o espalhamento do vírus COVID-19🦠
 
 <hr>
 
