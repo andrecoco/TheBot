@@ -72,6 +72,8 @@ command_handlers.append(CommandHandler('insert_ti', insert_transparent_image, fi
 command_handlers.append(CommandHandler('get_ti', get_transparent_image, filters=~Filters.update.edited_message))
 command_handlers.append(CommandHandler('flortinator', merge_transparent_image, filters=~Filters.update.edited_message))
 command_handlers.append(CommandHandler('weeb_finder', weeb_finder, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('echo', echo, filters=~Filters.update.edited_message))
+command_handlers.append(CommandHandler('ri', ri, filters=~Filters.update.edited_message))
 #command_handlers.append(InlineQueryHandler(inline_function))
 #command_handlers.append(InlineQueryHandler(meme_generator))
 
@@ -81,7 +83,7 @@ for handler in command_handlers:
 #NON COMMANDS
 from telegram.ext import MessageHandler
 dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'triste', re.IGNORECASE)), triste))
-dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'echo', re.IGNORECASE)), echo))
+#dispatcher.add_handler(MessageHandler(Filters.regex(re.compile(r'echo', re.IGNORECASE)), echo))
 dispatcher.add_handler(MessageHandler(~Filters.update.edited_message, db_insere_msg))
 
 #START BOT
