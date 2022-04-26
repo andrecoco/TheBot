@@ -242,6 +242,15 @@ def shame(update, context):
     else:
         update.message.reply_text(txt, quote=False)
 
+def ri(update, context):
+    risos = ["kkkkkK", "aushdahuhsduah", "aoisdjhaosdkasdpasok mt bom"]
+    nao_risos = ["nao entendi...", "era uma piada?", "haha?"]
+    update.message.delete() #apaga o comando, pra ficar mais clean
+    
+    if(update.message.reply_to_message != None):
+        idMessageReplied = update.message.reply_to_message.message_id    
+        update.message.reply_text(random.choices(risos), reply_to_message_id=idMessageReplied)
+
 def inline_function(update, context):
     query = update.inline_query.query
 
